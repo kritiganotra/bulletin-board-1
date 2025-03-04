@@ -14,6 +14,10 @@ class BoardsController < ApplicationController
 
     @the_board = matching_boards.at(0)
 
+    matching_posts = Post.where({ :board_id => the_id})
+
+    @list_of_posts = matching_posts.order({ :created_at => :desc })
+
     render({ :template => "boards/show" })
   end
 
@@ -51,4 +55,23 @@ class BoardsController < ApplicationController
 
     redirect_to("/boards", { :notice => "Board deleted successfully."} )
   end
+
+  def post_index
+    matching_posts = Post.all
+
+    @list_of_posts = matching_posts.order({ :created_at => :desc })
+
+    render({ :template => "boards/index" })
+  end
+
+  def post_show
+    the_id = params.fetch("path_id")
+
+    matching_posts = Post.where({ :id => the_id })
+
+    @the_post = matching_posts.at(0)
+
+    render({ :template => "boards/show" })
+  end
+
 end
